@@ -4,9 +4,16 @@
       <Link href="/" class="hover:text-[#137fec]">Home</Link>
       <span class="mx-2">/</span>
       <span>Owner Contracts</span>
-    </template>
+    </template> 
 
-    <div class="space-y-6">
+
+<div class="space-y-6">
+  <div class="flex justify-between items-center">
+    <h1 class="text-2xl font-bold text-slate-900">Owner Contracts</h1>
+    <Link :href="route('owner-contracts.create')" class="px-4 py-2 bg-[#137fec] text-white rounded-lg font-medium hover:bg-[#137fec]/90">
+      Add Contract
+    </Link>
+  </div>
       <div class="bg-white rounded-xl p-4 border border-slate-200">
         <div class="flex gap-4">
           <input 
@@ -84,6 +91,12 @@
                 View
               </Link>
               <button 
+                @click="renewContract(contract.id)"
+                class="px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 transition-colors"
+              >
+                Renew
+              </button>
+              <button 
                 @click="deleteContract(contract.id)"
                 class="px-4 py-2 border border-red-200 text-red-600 rounded-lg text-sm font-medium hover:bg-red-50 transition-colors"
               >
@@ -134,6 +147,10 @@ const deleteContract = (id) => {
   if (confirm('Delete this contract?')) {
     router.delete(`/owner-contracts/${id}`)
   }
+}
+
+const renewContract = (id) => {
+  router.get(`/owner-contracts/${id}/renew`)
 }
 
 const formatDate = (date) => {

@@ -7,11 +7,18 @@ use Inertia\Inertia;
 
 class UnitController extends Controller
 {
-    public function index()
-    {
-        $units = Unit::with('building')->latest()->paginate(15);
-        return Inertia::render('Units/Index', ['units' => $units]);
-    }
+public function index(Request $request)
+{
+    $units = Unit::with('building')
+        ->when($request->search, fn($q) => 
+            $q->whereHas('building', fn($q2) => 
+                $q2->where('building_name', 'like', "%{$request->search}%")
+            )
+        )
+        ->latest()
+        ->paginate(15);
+    return Inertia::render('Units/Index', ['units' => $units]);
+}
 
     public function create()
     {

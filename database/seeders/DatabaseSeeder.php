@@ -40,7 +40,7 @@ class DatabaseSeeder extends Seeder
         $building2 = Building::create(['owner_id' => $owner2->id, 'building_name' => 'Sky Tower', 'address' => 'Sheikh Zayed Road', 'city' => 'Dubai', 'status' => 'occupied']);
 
         // Units
-        $unit1 = Unit::create(['building_id' => $building1->id, 'unit_no' => '1205', 'floor_no' => '12', 'area_sqft' => 1200, 'assets' => ['AC', 'Fridge', 'Washing Machine'], 'status' => 'occupied']);
+        $unit1 = Unit::create(['building_id' => $building2->id, 'unit_no' => '1205', 'floor_no' => '12', 'area_sqft' => 1200, 'assets' => ['AC', 'Fridge', 'Washing Machine'], 'status' => 'occupied']);
         $unit2 = Unit::create(['building_id' => $building1->id, 'unit_no' => '805', 'floor_no' => '8', 'area_sqft' => 800, 'assets' => ['AC'], 'status' => 'occupied']);
         $unit3 = Unit::create(['building_id' => $building2->id, 'unit_no' => '305', 'floor_no' => '3', 'area_sqft' => 1500, 'assets' => ['AC', 'Fridge', 'Bed'], 'status' => 'vacant']);
 
@@ -49,7 +49,7 @@ class DatabaseSeeder extends Seeder
         $sub2 = Subunit::create(['unit_id' => $unit1->id, 'subunit_no' => 'R2', 'subunit_type' => 'room', 'area_sqft' => 350, 'status' => 'vacant']);
         $sub3 = Subunit::create(['unit_id' => $unit2->id, 'subunit_no' => 'R1', 'subunit_type' => 'room', 'area_sqft' => 400, 'status' => 'occupied']);
 
-        // Owner Contracts
+        // Owner Contractss
         $ownerContract1 = Contract::create([
             'unit_id' => $unit1->id,
             'person_id' => $owner1->id,

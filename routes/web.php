@@ -30,4 +30,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('tenants', TenantController::class);
     
     Route::resource('payments', PaymentController::class);
+
+    // routes/web.php - add these routes
+Route::get('owner-contracts/{contract}/renew', [OwnerContractController::class, 'renew'])->name('owner-contracts.renew');
+Route::get('tenant-contracts/{contract}/renew', [TenantContractController::class, 'renew'])->name('tenant-contracts.renew');
 });

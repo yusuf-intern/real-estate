@@ -11,7 +11,15 @@
         <h1 class="text-2xl font-bold text-slate-900">Owners</h1>
         <Link :href="route('owners.create')" class="px-4 py-2 bg-[#137fec] text-white rounded-lg font-medium hover:bg-[#137fec]/90">Add Owner</Link>
       </div>
-
+<div class="bg-white rounded-xl p-4 border border-slate-200">
+  <input 
+    v-model="search"
+    @input="filterResults"
+    type="text"
+    placeholder="Search by owner name..."
+    class="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#137fec]"
+  />
+</div>
       <div class="bg-white rounded-xl border border-slate-200 overflow-hidden">
         <table class="w-full">
           <thead class="bg-slate-50">
@@ -30,8 +38,10 @@
               <td class="px-6 py-4 text-sm text-slate-900">{{ owner.email }}</td>
               <td class="px-6 py-4 text-sm text-slate-900">{{ owner.nationality }}</td>
               <td class="px-6 py-4 text-sm space-x-2">
+                <div class="flex items-center gap-3">
                 <Link :href="route('owners.edit', owner.id)" class="text-[#137fec] hover:underline">Edit</Link>
                 <button @click="destroy(owner.id)" class="text-red-600 hover:underline">Delete</button>
+              </div>
               </td>
             </tr>
           </tbody>
@@ -47,5 +57,11 @@ import AppLayout from '@/Layouts/AppLayout.vue'
 defineProps({ owners: Object })
 const destroy = (id) => {
   if (confirm('Delete this owner?')) router.delete(route('owners.destroy', id))
+}
+
+const search = ref('')
+
+const filterResults = () => {
+  router.get(route('owners.index'), { search: search.value }, { preserveState: true })
 }
 </script>

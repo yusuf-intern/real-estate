@@ -6,11 +6,16 @@ use Inertia\Inertia;
 
 class OwnerController extends Controller
 {
-    public function index()
-    {
-        $owners = Owner::latest()->paginate(15);
-        return Inertia::render('Owners/Index', ['owners' => $owners]);
-    }
+public function index(Request $request)
+{
+    $owners = Owner::when($request->search, fn($q) => 
+            $q->where('name', 'like', "%{$request->search}%")
+              ->orWhere('phone', 'like', "%{$request->search}%")
+        )
+        ->latest()
+        ->paginate(15);
+    return Inertia::render('Owners/Index', ['owners' => $owners]);
+}
 
     public function create()
     {

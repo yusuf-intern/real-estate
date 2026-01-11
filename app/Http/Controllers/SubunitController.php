@@ -7,12 +7,18 @@ use Inertia\Inertia;
 
 class SubunitController extends Controller
 {
-    public function index()
-    {
-        $subunits = Subunit::with('unit.building')->latest()->paginate(15);
-        return Inertia::render('Subunits/Index', ['subunits' => $subunits]);
-    }
-
+public function index(Request $request)
+{
+    $subunits = Subunit::with('unit.building')
+        ->when($request->search, fn($q) => 
+            $q->whereHas('unit.building', fn($q2) => 
+                $q2->where('building_name', 'like', "%{$request->search}%")
+            )
+        )
+        ->latest()
+        ->paginate(15);
+    return Inertia::render('Subunits/Index', ['subunits' => $subunits]);
+}
     public function create()
     {
         $units = Unit::with('building')->get();

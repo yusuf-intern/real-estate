@@ -6,12 +6,16 @@ use Inertia\Inertia;
 
 class TenantController extends Controller
 {
-    public function index()
-    {
-        $tenants = Tenant::latest()->paginate(15);
-        return Inertia::render('Tenants/Index', ['tenants' => $tenants]);
-    }
-
+public function index(Request $request)
+{
+    $tenants = Tenant::when($request->search, fn($q) => 
+            $q->where('name', 'like', "%{$request->search}%")
+              ->orWhere('phone', 'like', "%{$request->search}%")
+        )
+        ->latest()
+        ->paginate(15);
+    return Inertia::render('Tenants/Index', ['tenants' => $tenants]);
+}
     public function create()
     {
         return Inertia::render('Tenants/Create');

@@ -13,7 +13,15 @@
           Add Building
         </Link>
       </div>
-
+<div class="bg-white rounded-xl p-4 border border-slate-200">
+  <input 
+    v-model="search"
+    @input="filterResults"
+    type="text"
+    placeholder="Search by building..."
+    class="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#137fec]"
+  />
+</div>
       <div class="bg-white rounded-xl border border-slate-200 overflow-hidden">
         <table class="w-full">
           <thead class="bg-slate-50">
@@ -34,8 +42,10 @@
               <td class="px-6 py-4 text-sm text-slate-900">{{ building.city }}</td>
               <td class="px-6 py-4"><span class="px-2 py-1 text-xs font-bold rounded-md bg-green-50 text-green-700">{{ building.status }}</span></td>
               <td class="px-6 py-4 text-sm space-x-2">
+                <div class="flex items-center gap-3">
                 <Link :href="route('buildings.edit', building.id)" class="text-[#137fec] hover:underline">Edit</Link>
                 <button @click="destroy(building.id)" class="text-red-600 hover:underline">Delete</button>
+              </div>
               </td>
             </tr>
           </tbody>
@@ -55,5 +65,11 @@ const destroy = (id) => {
   if (confirm('Delete this building?')) {
     router.delete(route('buildings.destroy', id))
   }
+}
+
+const search = ref('')
+
+const filterResults = () => {
+  router.get(route('buildings.index'), { search: search.value }, { preserveState: true })
 }
 </script>

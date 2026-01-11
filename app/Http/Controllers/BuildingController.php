@@ -9,8 +9,11 @@ class BuildingController extends Controller
 {
     public function index()
     {
-        $buildings = Building::with('owner')->latest()->paginate(15);
-        return Inertia::render('Buildings/Index', ['buildings' => $buildings]);
+         $buildings = Building::with('owner')
+        ->when($request->search, fn($q) => $q->where('building_name', 'like', "%{$request->search}%"))
+        ->latest()
+        ->paginate(15);
+    return Inertia::render('Buildings/Index', ['buildings' => $buildings]);
     }
 
     public function create()

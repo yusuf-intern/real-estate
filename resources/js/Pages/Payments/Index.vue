@@ -8,22 +8,40 @@
 
     <div class="space-y-6">
       <h1 class="text-2xl font-bold text-slate-900">All Payments</h1>
-
+<div class="bg-white rounded-xl p-4 border border-slate-200">
+  <input 
+    v-model="search"
+    @input="filterResults"
+    type="text"
+    placeholder="Search by contract ID..."
+    class="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#137fec]"
+  />
+</div>
       <div class="bg-white rounded-xl p-4 border border-slate-200">
         <div class="flex gap-4">
-          <select v-model="filters.type" @change="filter" class="px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-[#137fec]">
-            <option value="">All Types</option>
-            <option value="cheque">Cheque</option>
-            <option value="online">Online</option>
-            <option value="cash">Cash</option>
-          </select>
-          <select v-model="filters.status" @change="filter" class="px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-[#137fec]">
-            <option value="">All Status</option>
-            <option value="pending">Pending</option>
-            <option value="collected">Collected</option>
-            <option value="cleared">Cleared</option>
-            <option value="bounced">Bounced</option>
-          </select>
+<select
+  v-model="filters.type"
+  @change="filter"
+  class="px-4 py-2 pr-10 border border-slate-200 rounded-lg
+         focus:ring-2 focus:ring-[#137fec] appearance-none bg-white">
+  <option value="">All Types</option>
+  <option value="cheque">Cheque</option>
+  <option value="online">Online</option>
+  <option value="cash">Cash</option>
+</select>
+
+<select
+  v-model="filters.status"
+  @change="filter"
+  class="px-4 py-2 pr-10 border border-slate-200 rounded-lg
+         focus:ring-2 focus:ring-[#137fec] appearance-none bg-white">
+  <option value="">All Status</option>
+  <option value="pending">Pending</option>
+  <option value="collected">Collected</option>
+  <option value="cleared">Cleared</option>
+  <option value="bounced">Bounced</option>
+</select>
+
         </div>
       </div>
 
@@ -101,4 +119,10 @@ const filter = () => {
 
 const formatDate = (date) => new Date(date).toLocaleDateString('en-GB')
 const formatMoney = (amount) => new Intl.NumberFormat('en-US').format(amount)
+
+const search = ref('')
+
+const filterResults = () => {
+  router.get(route('payments.index'), { search: search.value }, { preserveState: true })
+}
 </script>
